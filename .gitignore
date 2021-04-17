@@ -1,0 +1,5 @@
+#Data folder
+Data/
+
+#ignore idea
+.idea/
