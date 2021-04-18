@@ -1,5 +1,9 @@
 import confluent_kafka
 import sys
+import time
+import csv
+
+filepath = 'D:/Sources/UCU/Kafka/02-kafka/data/timestamps.csv'
 
 conf = {'bootstrap.servers': "localhost:9092",
         'group.id': 'mygroup',
@@ -11,6 +15,7 @@ consumer.subscribe(['kafka-test'])
 
 while True:
     msg = consumer.poll(1.0)
+    time.sleep(1)
 
     if msg is None:
         continue
@@ -21,6 +26,10 @@ while True:
             print(msg.error())
             break
 
-    print('Received message: {}'.format(msg.value().decode('utf-8')))
+    with open(filepath, 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([time.time(), msg.timestamp()])
+
+    print(msg.value())
 
 consumer.close()
