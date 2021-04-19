@@ -15,7 +15,7 @@ consumer.subscribe(['kafka-test'])
 
 while True:
     msg = consumer.poll(1.0)
-    time.sleep(1)
+    # time.sleep(1)
 
     if msg is None:
         continue
@@ -28,8 +28,8 @@ while True:
 
     with open(filepath, 'a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([time.time(), msg.timestamp()])
+        writer.writerow([int(time.time() * 1000), msg.timestamp()[1], sys.getsizeof(msg.value())])
 
-    print(msg.value())
+    #print(msg.value())
 
 consumer.close()
