@@ -69,44 +69,27 @@ services:
     networks:
       - localnet
 
+  mongo:
+    image: "mongo:4.0-xenial"
+    container_name: mongo
+    networks:
+      - localnet
+    ports:
+      - "27017:27017"
+    restart: always
 
-  # worker-1:
-  #   container_name: pull-worker-1
-  #   build:
-  #     context: github_pull_server/
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8000:8000"
-  #   networks:
-  #     - localnet
-
-  # processor-1:
-  #   container_name: processor-worker-1
-  #   build:
-  #     context: language_processor/
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - "8050:8050"
-  #   depends_on:
-  #     - broker
-  #   networks:
-  #     - localnet
-      
-  # mongo:
-  #   image: "mongo:4.0-xenial"
-  #   container_name: mongo
-  #   volumes:
-  #     - rs1:/data/db
-  #   networks:
-  #     - localnet
-  #   ports:
-  #     - "27017:27017"
-  #   restart: always
-
+  consumer:
+    # container_name: consumer
+    build:
+      context: consumer/
+      dockerfile: Dockerfile
+    ports:
+      - "8000-8050"
+    depends_on:
+      - broker
+    networks:
+      - localnet
 
 networks:
   localnet:
     attachable: true
-
-# volumes:
-#   rs1:
