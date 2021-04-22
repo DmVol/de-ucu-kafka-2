@@ -90,6 +90,18 @@ services:
     networks:
       - localnet
 
+  producer:
+    build:
+      context: producer/
+      dockerfile: Dockerfile
+    ports:
+      - "8080-8090"
+    depends_on:
+      - broker
+      - consumer
+    networks:
+      - localnet
+
 networks:
   localnet:
     attachable: true
