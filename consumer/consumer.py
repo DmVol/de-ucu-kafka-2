@@ -3,6 +3,7 @@ import sys
 import time
 import pymongo
 import uuid
+import json
 
 process_uuid = uuid.uuid1().hex[:8]
 
@@ -33,8 +34,10 @@ while True:
         else:
             print(msg.error())
             break
-    print(time.time())
-    row = {"process": process_uuid, "consumer_ts": int(time.time() * 1000), "kafka_ts": msg.timestamp()[1], "msg_size": sys.getsizeof(msg.value())}
+
+    msg_value = json.loads(msg.value().decode('utf8'))
+    row = {"process": process_uuid, "consumer_ts": int(time.time() * 1000),
+           "producer_ts": msg_value['producer_timestamp'], "msg_size": sys.getsizeof(msg_value)}
 
     data.insert_one(row)
 

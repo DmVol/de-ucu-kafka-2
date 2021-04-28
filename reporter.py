@@ -26,17 +26,17 @@ if __name__ == "__main__":
 
     table = initialize_mongo(port=27017)
 
-    while runs <= 30:
+    while runs < 60:
 
         last_row = table.find_one(sort=[('_id', pymongo.DESCENDING)])
         first_row = table.find_one(sort=[('_id', pymongo.ASCENDING)])
         sum_agg = table.aggregate([{'$group': {'_id': 1, 'all': {'$sum': '$msg_size'}}}])
 
-        timing = (last_row['consumer_ts'] - first_row['kafka_ts']) / 1000
+        timing = (last_row['consumer_ts'] - first_row['producer_ts']) / 1000
         data_size = get_attribute(sum_agg, 'all')
 
         get_max_diff = table.aggregate(
-        [{'$group': {'_id': 1, "diff": {'$max': {'$abs': {'$subtract': ['$consumer_ts', "$kafka_ts"]}}}}}])
+        [{'$group': {'_id': 1, "diff": {'$max': {'$abs': {'$subtract': ['$consumer_ts', "$producer_ts"]}}}}}])
 
         max_diff = get_attribute(get_max_diff, 'diff') / 1000
 
@@ -58,8 +58,8 @@ if __name__ == "__main__":
     plt.subplot(2, 1, 2)
     plt.plot(measures, max_deltas)
     plt.plot(max_deltas)
-    plt.xlabel('n query')
-    plt.ylabel('Max diff(seconds)')
+    plt.xlabel('Timeline (seconds)')
+    plt.ylabel('Max message delay (seconds)')
 
     plt.show()
 
