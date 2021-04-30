@@ -27,6 +27,7 @@ if __name__ == "__main__":
     table = initialize_mongo(port=27017)
 
     while runs < 60:
+        print(f"Running measurement # {runs}")
 
         last_row = table.find_one(sort=[('_id', pymongo.DESCENDING)])
         first_row = table.find_one(sort=[('_id', pymongo.ASCENDING)])
