@@ -12,11 +12,14 @@ All the services, except reporting, are implemented as docker containers.
 
 # Setting up
 docker-compose up -d --build
+
 For getting monitoring data: python reporter.py
 
 # Managing cluster configuration
 Change producers qty: docker-compose scale producer=2
+
 Change consumer qty: docker-compose scale consumer=10
+
 Change partitions qty: docker-compose exec broker kafka-topics --zookeeper zookeeper:2181 --alter --topic kafka-test --partitions 2
 
 # Results
