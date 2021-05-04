@@ -18,7 +18,7 @@ Change producers qty: docker-compose scale producer=2
 Change consumer qty: docker-compose scale consumer=10
 Change partitions qty: docker-compose exec broker kafka-topics --zookeeper zookeeper:2181 --alter --topic kafka-test --partitions 2
 
-#Results
+# Results
 1 Producer, 1 Partition, 1 Consumer
 
 ![1_Producer_1_Partitions_1_Consumers](https://user-images.githubusercontent.com/24934034/117033007-aab1f680-ad0a-11eb-8fec-e9c59d5cea0f.png)
