@@ -7,6 +7,7 @@
  - Reporting service 
  - MongoDB instance
  - Kafka instance
+
 All the services, except reporting, are implemented as docker containers.
 
 # Setting up
